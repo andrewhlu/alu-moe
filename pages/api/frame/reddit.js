@@ -35,11 +35,29 @@ async function getSubredditImage(subreddit) {
 }
 
 export default async function (req, res) {
-    let result = await getSubredditImage(req.query.subreddit);
+    if(req.query.subreddit && req.query.subreddit !== "") {
+        let result = await getSubredditImage(req.query.subreddit);
 
-    res.statusCode = 200;
-    res.setHeader("Content-Type", "application/json");
-    res.end(
-        JSON.stringify(result)
-    );
+        if(result.success) {
+            res.statusCode = 200;
+        }
+        else {
+            res.statusCode = 500;
+        }
+
+        res.setHeader("Content-Type", "application/json");
+        res.end(
+            JSON.stringify(result)
+        );
+    }
+    else {
+        res.statusCode = 400;
+        res.setHeader("Content-Type", "application/json");
+        res.end(
+            JSON.stringify({
+                success: false,
+                error: "No subreddit was provided"
+            })
+        );
+    }
 }
