@@ -2,6 +2,7 @@ import config from "./config";
 import { fetch } from "./fetch";
 import { getData, setData } from "./firebase";
 import crypto from 'crypto';
+import absoluteUrl from 'next-absolute-url';
 
 const contexts = {
     sonos: {
@@ -9,26 +10,31 @@ const contexts = {
         tokenUri: "https://api.sonos.com/login/v3/oauth/access",
         clientId: config.SONOS_CLIENT_ID,
         clientSecret: config.SONOS_CLIENT_SECRET,
-        redirectUri: config.SONOS_REDIRECT_URI,
         scopes: "playback-control-all",
-        tokenAuthHeader: true,
-        uriEncodedBody: true,
     },
     venmo: {
         authUri: "https://accounts.google.com/o/oauth2/v2/auth",
         tokenUri: "https://oauth2.googleapis.com/token",
         clientId: config.GOOGLE_CLIENT_ID,
         clientSecret: config.GOOGLE_CLIENT_SECRET,
-        redirectUri: config.GOOGLE_REDIRECT_URI_VENMO,
         scopes: "https://www.googleapis.com/auth/gmail.readonly",
+        jsonEncodedBody: true,
+        tokenAuthInBody: true,
         additionalParams: {
             include_granted_scopes: true,
             access_type: "offline",
         },
-    }
+    },
+    spotify: {
+        authUri: "https://accounts.spotify.com/authorize",
+        tokenUri: "https://accounts.spotify.com/api/token",
+        clientId: config.SPOTIFY_CLIENT_ID,
+        clientSecret: config.SPOTIFY_CLIENT_SECRET,
+        scopes: "user-read-playback-state user-modify-playback-state",
+    },
 };
 
-export async function startAuth(context, res) {
+export async function startAuth(context, req, res) {
     if(!context) {
         res.statusCode = 400;
         res.end({ error: "No OAuth context was provided" });
@@ -41,13 +47,15 @@ export async function startAuth(context, res) {
     }
 
     let state = crypto.randomBytes(16).toString('base64').slice(0, 16).replace(/[/+]/g, "");
-    setData("state/" + state, context);
+    await setData("state/" + state, context);
+
+    const { protocol, host } = absoluteUrl(req, 'localhost:3000');
 
     const urlParams = {
         response_type: "code",
         client_id: contexts[context].clientId,
         scope: contexts[context].scopes,
-        redirect_uri: contexts[context].redirectUri,
+        redirect_uri: protocol + "//" + host + "/api/auth/redirect/" + context,
         state: state,
     };
 
@@ -75,24 +83,26 @@ export async function callbackAuth(context, req) {
         throw "An invalid state was received";
     }
 
-    setData("state/" + state, null);
+    await setData("state/" + state, null);
+
+    const { protocol, host } = absoluteUrl(req, 'localhost:3000');
 
     const body = {
         grant_type: "authorization_code",
         code: code,
-        client_id: contexts[context].clientId,
-        client_secret: contexts[context].clientSecret,
-        redirect_uri: contexts[context].redirectUri,
+        client_id: contexts[context].tokenAuthInBody ? contexts[context].clientId : null,
+        client_secret: contexts[context].tokenAuthInBody ? contexts[context].clientSecret : null,
+        redirect_uri: protocol + "//" + host + "/api/auth/redirect/" + context,
     };
 
     const headers = {
-        "Authorization": contexts[context].tokenAuthHeader ? "Basic " + Buffer.from(contexts[context].clientId + ":" + contexts[context].clientSecret).toString('base64') : null,
-        "Content-Type": contexts[context].uriEncodedBody ? "application/x-www-form-urlencoded" : "application/json",
+        "Authorization": contexts[context].tokenAuthInBody ? null :  "Basic " + Buffer.from(contexts[context].clientId + ":" + contexts[context].clientSecret).toString('base64'),
+        "Content-Type": contexts[context].jsonEncodedBody ? "application/json" : "application/x-www-form-urlencoded",
     };
 
     const options = {
         method: "POST",
-        body: contexts[context].uriEncodedBody ? new URLSearchParams(body).toString() : JSON.stringify(body),
+        body: contexts[context].jsonEncodedBody ? JSON.stringify(body) : new URLSearchParams(body).toString(),
         headers: headers,
     };
 
