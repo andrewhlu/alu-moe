@@ -32,6 +32,14 @@ const contexts = {
         clientSecret: config.SPOTIFY_CLIENT_SECRET,
         scopes: "user-read-playback-state user-modify-playback-state",
     },
+    discord: {
+        authUri: "https://discord.com/api/oauth2/authorize",
+        clientId: config.DISCORD_CLIENT_ID,
+        scopes: "bot",
+        additionalParams: {
+            permissions: 402664512
+        },
+    }
 };
 
 export async function startAuth(context, req, res) {
@@ -55,7 +63,7 @@ export async function startAuth(context, req, res) {
         response_type: "code",
         client_id: contexts[context].clientId,
         scope: contexts[context].scopes,
-        redirect_uri: protocol + "//" + host + "/api/auth/redirect/" + context,
+        redirect_uri: contexts[context].tokenUri ? protocol + "//" + host + "/api/auth/redirect/" + context : "",
         state: state,
     };
 

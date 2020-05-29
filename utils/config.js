@@ -10,6 +10,7 @@ if (typeof window === "undefined") {
         GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
         SPOTIFY_CLIENT_ID: process.env.SPOTIFY_CLIENT_ID,
         SPOTIFY_CLIENT_SECRET: process.env.SPOTIFY_CLIENT_SECRET,
+        DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
     };
 } else {
     /**
