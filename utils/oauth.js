@@ -37,9 +37,9 @@ const contexts = {
         clientId: config.DISCORD_CLIENT_ID,
         scopes: "bot",
         additionalParams: {
-            permissions: 402664512
+            permissions: config.DISCORD_BOT_PERMISSION,
         },
-    }
+    },
 };
 
 export async function startAuth(context, req, res) {
