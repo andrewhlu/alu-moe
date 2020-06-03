@@ -30,7 +30,7 @@ const contexts = {
         tokenUri: "https://accounts.spotify.com/api/token",
         clientId: config.SPOTIFY_CLIENT_ID,
         clientSecret: config.SPOTIFY_CLIENT_SECRET,
-        scopes: "user-read-playback-state user-modify-playback-state",
+        scopes: "user-read-playback-state user-modify-playback-state streaming user-read-email user-read-private",
     },
     discord: {
         authUri: "https://discord.com/api/oauth2/authorize",
