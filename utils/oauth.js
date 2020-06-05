@@ -17,7 +17,7 @@ const contexts = {
         tokenUri: "https://oauth2.googleapis.com/token",
         clientId: config.GOOGLE_CLIENT_ID,
         clientSecret: config.GOOGLE_CLIENT_SECRET,
-        scopes: "https://www.googleapis.com/auth/gmail.readonly",
+        scopes: "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/gmail.readonly",
         jsonEncodedBody: true,
         tokenAuthInBody: true,
         additionalParams: {
