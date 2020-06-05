@@ -6,7 +6,6 @@ async function getSubredditImage(subreddit) {
     }
 
     const response = await fetch("https://www.reddit.com/" + subreddit + "/random.json?sort=top&t=week&limit=1");
-    // const response = await fetch("https://alu.moe/frame/reddit?subreddit=earthporn");
 
     if(response !== "" && response[0].data.children[0].data.url) {
         let url = response[0].data.children[0].data.url;

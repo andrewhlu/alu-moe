@@ -83,7 +83,6 @@ export async function callbackAuth(context, req) {
     }
 
     const { state, code, scope } = req.query;
-    console.log(state + ", " + code + ", " + scope);
 
     let stateDb = await getData("state/" + state);
 
@@ -114,10 +113,7 @@ export async function callbackAuth(context, req) {
         headers: headers,
     };
 
-    console.log(options)
-
     const response = await fetch(contexts[context].tokenUri, options);
-    console.log(response);
 
     return response;
 }
