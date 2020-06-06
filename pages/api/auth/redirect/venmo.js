@@ -1,6 +1,7 @@
 import { callbackAuth } from "../../../../utils/oauth";
 import { fetch } from "../../../../utils/fetch";
 import { getData, setData } from "../../../../utils/firebase";
+import { randomString } from "../../../../utils/venmo";
 
 export default async function(req, res) {
     let result;
@@ -51,16 +52,4 @@ export default async function(req, res) {
         res.setHeader("Content-Type", "application/json");
         res.end(JSON.stringify(error));
     }
-}
-
-function getTodayDateString() {
-    let date = new Date();
-    return (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
-}
-
-//Generate random string function
-function randomString(length, chars) {
-    var result = '';
-    for (var i = length; i > 0; --i) result += chars[Math.round(Math.random() * (chars.length - 1))];
-    return result;
 }

@@ -7,15 +7,12 @@ function initFirebaseDatabase() {
     // Try to return the FirebaseApp instance to check if the Admin SDK is initialized
     try {
         admin.app();
-        console.log("Firebase Admin SDK is already intialized");
     }
     catch(err) {
-        console.log("Firebase Admin SDK is not initialized, initializing...");
         admin.initializeApp({
             credential: admin.credential.cert(serviceAccount),
             databaseURL: "https://" + serviceAccount.project_id + ".firebaseio.com"
         });
-        console.log("Firebase Admin SDK successfully initialized");
     }
 
     return admin.database();
