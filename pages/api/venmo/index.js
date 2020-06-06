@@ -1,4 +1,5 @@
 import { getData, setData } from "../../../utils/firebase";
+import { getTodayDateString } from "../../../utils/venmo";
 
 export default async function(req, res) {
     const accessCode = req.query.code;
@@ -84,6 +85,12 @@ export default async function(req, res) {
                     newSettings.costPerTicket = data.settings.costPerTicket;
                 }
 
+                if(data.lastDate === undefined) {
+                    // Set today's date as the last date
+                    console.log(getTodayDateString());
+                    await setData("venmo/tokens/" + userId + "/lastDate", getTodayDateString());
+                }
+
                 // Save and return new data
                 await setData("venmo/tokens/" + userId + "/settings", newSettings);
                 newSettings.initialized = true;
@@ -93,6 +100,9 @@ export default async function(req, res) {
                 res.end(JSON.stringify(newSettings));
 
                 break;
+            }
+            default: {
+                throw "Invalid request type";
             }
         }
     }
