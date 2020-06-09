@@ -85,6 +85,17 @@ export default async function(req, res) {
                     newSettings.costPerTicket = data.settings.costPerTicket;
                 }
 
+                if(body.venmoHandle !== undefined) {
+                    newSettings.venmoHandle = body.venmoHandle.toLowerCase();
+                }
+                else if(data.settings === undefined) {
+                    throw "Venmo handle must be present to initialize the app";
+                }
+                else {
+                    // Keep the current value
+                    newSettings.venmoHandle = data.settings.venmoHandle;
+                }
+
                 if(data.lastDate === undefined) {
                     // Set today's date as the last date
                     console.log(getTodayDateString());
