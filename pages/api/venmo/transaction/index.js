@@ -131,7 +131,9 @@ async function getTransaction(userId, transactionCode) {
         for(let i = 0; i < ids.length; i++) {
             transaction.amount += transaction.emails[ids[i]].amount;
         }
-        transaction.tickets = parseInt(transaction.amount / data.settings.costPerTicket);
+        
+        // Quick fix to avoid number precision errors
+        transaction.tickets = parseInt(Math.round(transaction.amount * 100 / data.settings.costPerTicket) / 100);
 
         // Update transaction in database
         await setData("venmo/tokens/" + userId + "/transactions/" + transactionCode, transaction);
