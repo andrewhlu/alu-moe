@@ -106,7 +106,7 @@ async function getTransaction(userId, transactionCode) {
     }
 
     const emails = data.emails;
-    if(emails !== undefined) {
+    if(emails !== undefined && !transaction.completed) {
         // There are unclaimed emails, search through them
         let ids = Object.keys(emails);
 
@@ -145,6 +145,7 @@ async function getTransaction(userId, transactionCode) {
 export default async function(req, res) {
     const accessCode = req.query.code;
     const transactionCode = req.query.transaction;
+    const body = req.body;
 
     try {
         if(accessCode === undefined || accessCode === "") {
@@ -175,7 +176,36 @@ export default async function(req, res) {
                 res.end(JSON.stringify({
                     success: true,
                     transaction: transaction,
-                })); 
+                }));
+
+                break;
+            }
+            case "POST": {
+                // Process all new emails in the database
+                await getNewEmails(req, userId);
+
+                // Get new transaction object after parsing emails
+                const transaction = await getTransaction(userId, transactionCode);
+
+                if(body.completed === true) {
+                    if(transaction.completed) {
+                        throw "Transaction already completed";
+                    }
+                    else {
+                        await setData("venmo/tokens/" + userId + "/transactions/" + transactionCode + "/completed", true);
+                        transaction.completed = true;
+                    }
+                }
+                else {
+                    throw "Invalid POST body";
+                }
+
+                res.statusCode = 200;
+                res.setHeader("Content-Type", "application/json");
+                res.end(JSON.stringify({
+                    success: true,
+                    transaction: transaction,
+                }));
 
                 break;
             }
