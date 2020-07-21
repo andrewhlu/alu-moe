@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ScaVision</title>
+
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+
+    <!-- FontAwesome Script -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+    <!-- Custom CSS -->
+    <link rel= "stylesheet" href= "index.css">
+</head>
+<body>
+    <div id="intro-div" class="center-content-box">
+        <h1>ScaVision!</h1>
+
+        <div class="white-trans-bg">
+            <h3>A new take on the scavenger hunt!</h3>
+
+            <p>Race against your opponents to solve riddles and find items faster than them!</p>
+
+            <p>Each round, you will get a riddle. The answer to every riddle is an item that's part of your daily lives. When you figure out the answer to the riddle, search your surroundings for the item, and take a picture of it to win!</p>
+            <p>This app uses your device's camera. Because this app may require moving around, I recommend using a phone or tablet to play this game.</p>
+            <p>This game utilizes Google Cloud's Vision API to detect items in your pictures. As part of this game, your pictures will be uploaded to Google Cloud.</p>
+            <br>
+            <h3>Are you ready? Select your team below.</h3>
+
+            <button type="button" class="team-green" onclick="joinTeam('green');">Team Green</button>
+            <button type="button" class="team-purple" onclick="joinTeam('purple');">Team Purple</button>
+
+            <p>FYI: This app was my first-ever hackathon project! This project was originally created in January 2018, but was re-built for today's fun event.</p>
+            <p><a href="https://andrewhlu.com" target="_blank">Check out some of my other cool projects!</a></p>
+        </div>
+    </div>
+
+    <div id="game-div" hidden>
+        <div class="top-bar">
+            <p id="nameText">Andrew Lu - 200</p>
+            <h3 class="prompt" id="promptText">Ready?</h3>
+        </div>
+
+        <video autoplay id="cameraElement"></video>
+
+        <div class="camera-button" onclick="takePicture()">
+            <p><i class="fas fa-camera"></i></p>
+        </div>
+    </div>
+
+    <div id="success-div" class="center-content-box" hidden>
+        <h1>Mission Success!</h1>
+
+        <div class="white-trans-bg">
+            <h3>Your team survived the attack!</h3>
+
+            <p>Your skills are outstanding, and we have great respect for your work. Congratulations!</p>
+            <br>
+
+            <button type="button" class="team-green" onclick="resetGame();">Reset Game</button>
+        </div>
+    </div>
+
+    <div id="failure-div" class="center-content-box" hidden>
+        <h1>Mission Failed!</h1>
+
+        <div class="white-trans-bg">
+            <h3>Your team did not survive the attack.</h3>
+
+            <p>Your ship has been destroyed due to the large number of asteroids that hit your ship! Better luck next time!</p>
+            <br>
+
+            <button type="button" class="team-green" onclick="resetGame();">Reset Game</button>
+        </div>
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-storage.js"></script>
+
+    <!-- Custom Scripts -->
+    <script src="index.js"></script>
+</body>
+
+</html>
