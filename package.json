@@ -8,6 +8,7 @@
     "start": "next start -p $PORT"
   },
   "dependencies": {
+    "@google-cloud/vision": "^2.1.1",
     "dotenv": "^8.2.0",
     "firebase-admin": "^8.12.1",
     "googleapis": "^39.2.0",
