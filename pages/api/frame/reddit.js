@@ -1,5 +1,17 @@
 import { fetch } from "../../../utils/fetch";
 
+import Cors from 'cors'
+import initMiddleware from '../../../lib/init-middleware'
+
+// Initialize the cors middleware
+const cors = initMiddleware(
+    // You can read more about the available options here: https://github.com/expressjs/cors#configuration-options
+    Cors({
+        // Only allow requests with GET, POST and OPTIONS
+        methods: ['GET', 'POST', 'OPTIONS'],
+    })
+)
+
 async function getSubredditImage(subreddit) {
     if(subreddit.substring(0, 2) !== "r/") {
         subreddit = "r/" + subreddit;
@@ -34,6 +46,9 @@ async function getSubredditImage(subreddit) {
 }
 
 export default async function (req, res) {
+    // Run cors
+    await cors(req, res)
+
     if(req.query.subreddit && req.query.subreddit !== "") {
         let result = await getSubredditImage(req.query.subreddit);
 
