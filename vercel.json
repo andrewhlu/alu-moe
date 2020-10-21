@@ -3,6 +3,7 @@
       { "source": "/slack", "destination": "https://join.slack.com/t/ucsb-cs156-f20/shared_invite/zt-hf5dgnx0-Wh5o8BBQ6wG7~iuuAx5ECA", "permanent": false },
       { "source": "/github", "destination": "https://ucsb-cs-github-linker.herokuapp.com/", "permanent": false },
       { "source": "/teams", "destination": "https://docs.google.com/spreadsheets/d/e/2PACX-1vQOCADvCf9G46uSJ2m6tpFiGqMDuMOlfG_sSfcHZ8YSmOuonXQTga0dF5ASO_5RiM-UH5Zpc9sMcNgm/pubhtml" },
-      { "source": "/ucsb-photos", "destination": "https://help.lsit.ucsb.edu/hc/en-us/articles/360020386612", "permanent": false }
+      { "source": "/ucsb-photos", "destination": "https://help.lsit.ucsb.edu/hc/en-us/articles/360020386612", "permanent": false },
+      { "source": "/career-fair", "destination": "https://ucsb.joinhandshake.com/career_fairs/18217/student_preview", "permanent": false }
     ]
 }
