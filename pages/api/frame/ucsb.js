@@ -13,9 +13,9 @@ const cors = initMiddleware(
 )
 
 async function getPhotoBlockImage() {
-    const response = await fetchText("https://gauchospace.ucsb.edu/courses/login/index.php");
+    const response = await fetchText("https://archive.gauchospace.ucsb.edu/courses/login/index.php");
 
-    let url = response.substr(response.indexOf("https://gauchospace.ucsb.edu/courses/blocks/photo/image.php"));
+    let url = response.substr(response.indexOf("https://archive.gauchospace.ucsb.edu/courses/blocks/photo/image.php"));
     url = url.substring(0, url.indexOf("&amp;thumb=1")).replace(/&amp;/g, "&");
 
     let desc = response.substr(response.indexOf("<div class=\"image-desc\">") + 24);
