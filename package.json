@@ -11,7 +11,7 @@
     "@google-cloud/vision": "^2.1.1",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
-    "firebase-admin": "^8.12.1",
+    "firebase-admin": "^11.4.1",
     "googleapis": "^39.2.0",
     "isomorphic-unfetch": "^3.0.0",
     "next": "9.3.4",
